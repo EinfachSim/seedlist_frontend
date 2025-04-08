@@ -1,11 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seedlist</title>
+  <meta charset="UTF-8">
+  <title>Flask JSON Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f9f9f9;
+    }
+    #output {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      background: #fff;
+    }
+  </style>
 </head>
 <body>
-    Coming soon
+
+  <h1>Flask API Test</h1>
+  <button id="loadBtn">Load Data</button>
+
+  <div id="output">Click the button to load data from the API.</div>
+
+  <script>
+    document.getElementById('loadBtn').addEventListener('click', () => {
+      fetch('https://seedlist-backend.onrender.com/')
+        .then(response => {
+          if (!response.ok) throw new Error("Network response was not ok");
+          return response.json();
+        })
+        .then(data => {
+          document.getElementById('output').innerHTML = `
+            <strong>Status:</strong> ${data.status}<br>
+            <strong>Message:</strong> ${data.message}<br>
+            <strong>Items:</strong> ${data.items.join(', ')}
+          `;
+        })
+        .catch(error => {
+          document.getElementById('output').innerText = 'Error fetching data: ' + error.message;
+        });
+    });
+  </script>
+
 </body>
 </html>
